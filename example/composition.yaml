@@ -12,6 +12,6 @@ spec:
     functionRef:
       name: function-go
     input:
-      apiVersion: template.fn.crossplane.io/v1beta1
+      apiVersion: go.fn.crossplane.io/v1beta1
       kind: Input
       example: "Hello world"

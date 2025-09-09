@@ -1,6 +1,6 @@
 // Package v1beta1 contains the input type for this Function
 // +kubebuilder:object:generate=true
-// +groupName=template.fn.crossplane.io
+// +groupName=go.fn.crossplane.io
 // +versionName=v1beta1
 package v1beta1
 
@@ -14,14 +14,14 @@ import (
 // TODO: Add your input type here! It doesn't need to be called 'Input', you can
 // rename it to anything you like.
 
-// Input can be used to provide input to this Function.
+// Script can be used to provide input to this Function.
 // +kubebuilder:object:root=true
 // +kubebuilder:storageversion
 // +kubebuilder:resource:categories=crossplane
-type Input struct {
+type Script struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Example is an example field. Replace it with whatever input you need. :)
-	Example string `json:"example"`
+	Example string `json:"example,omitempty"`
 }
