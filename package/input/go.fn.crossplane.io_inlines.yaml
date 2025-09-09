@@ -3,23 +3,23 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
-  name: inputs.template.fn.crossplane.io
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: inlines.go.fn.crossplane.io
 spec:
-  group: template.fn.crossplane.io
+  group: go.fn.crossplane.io
   names:
     categories:
     - crossplane
-    kind: Input
-    listKind: InputList
-    plural: inputs
-    singular: input
+    kind: Inline
+    listKind: InlineList
+    plural: inlines
+    singular: inline
   scope: Namespaced
   versions:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: Input can be used to provide input to this Function.
+        description: Inline can be used to provide input to this Function.
         properties:
           apiVersion:
             description: |-
@@ -42,8 +42,6 @@ spec:
             type: string
           metadata:
             type: object
-        required:
-        - example
         type: object
     served: true
     storage: true
