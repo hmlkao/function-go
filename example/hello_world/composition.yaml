@@ -13,5 +13,12 @@ spec:
       name: function-go
     input:
       apiVersion: go.fn.crossplane.io/v1beta1
-      kind: Input
-      example: "Hello world"
+      kind: Script
+      inline: |-
+        package main
+
+        import "fmt"
+
+        func main() {
+          fmt.Println("{\"message\":\"Hello world\"}")
+        }

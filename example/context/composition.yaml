@@ -1,0 +1,81 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: function-go
+spec:
+  compositeTypeRef:
+    apiVersion: example.crossplane.io/v1
+    kind: XR
+  mode: Pipeline
+  pipeline:
+  - step: prepare-context
+    functionRef:
+      name: function-go
+    input:
+      apiVersion: go.fn.crossplane.io/v1beta1
+      kind: Script
+      inline: |-
+        package main
+
+        import (
+          "fmt"
+          "encoding/json"
+          "os"
+        )
+
+        var observed struct {
+          Composite struct {
+            Resource struct {
+              Metadata struct {
+                Name string `json:"name"`
+              } `json:"metadata"`
+            } `json:"resource"`
+          } `json:"composite"`
+        }
+
+        var output struct {
+          Message     string `json:"message"`
+        }
+
+        func main() {
+          // Load observed from file
+          observedByte, err := os.ReadFile(".cache/observed.json")
+          if err != nil {
+            fmt.Println("Error opening observed file:", err)
+            os.Exit(1)
+          }
+          if err := json.Unmarshal(observedByte, &observed); err != nil {
+            fmt.Println("Error unmarshalling observed JSON:", err)
+            os.Exit(1)
+          }
+
+          output.Message = "Unknown"
+          if observed.Composite.Resource.Metadata.Name == "example-xr" {
+            output.Message = "Hello, example-xr!"
+          }
+
+          // Print output JSON
+          outputJSON, err := json.Marshal(output)
+          if err != nil {
+            fmt.Println("error marshalling output JSON:", err)
+            os.Exit(1)
+          }
+          fmt.Println(string(outputJSON))
+        }
+  - step: generate-resource
+    functionRef:
+      name: function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      kind: GoTemplate
+      source: Inline
+      inline:
+        template: |-
+          apiVersion: example.crossplane.io/v1
+          kind: NewXR
+          metadata:
+            name: generated-xr
+            annotations:
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ .observed.composite.resource.spec.repositoryName }}
+          spec:
+            message: {{ .context.stepID.message }}
