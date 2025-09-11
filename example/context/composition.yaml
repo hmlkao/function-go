@@ -1,0 +1,39 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: function-go
+spec:
+  compositeTypeRef:
+    apiVersion: example.crossplane.io/v1
+    kind: XR
+  mode: Pipeline
+  pipeline:
+  - step: prepare-context
+    functionRef:
+      name: function-go
+    input:
+      apiVersion: go.fn.crossplane.io/v1beta1
+      kind: Script
+      inline: |-
+        import (
+          "context"
+          "fmt"
+        )
+
+        func main() {
+          ctx := context.Background()
+          fmt.Printf("%s", "Hello world")
+        }
+  - step: run-the-template
+    functionRef:
+      name: function-go-templating
+    input:
+      apiVersion: templating.fn.crossplane.io/v1beta1
+      kind: Inline
+      template: |-
+        apiVersion: example.crossplane.io/v1
+        kind: XR
+        metadata:
+          name: example-xr
+        spec:
+          message: {{ .context.message }}
