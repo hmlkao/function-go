@@ -19,7 +19,7 @@ spec:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: Script can be used to provide input to this Function.
+        description: Inline can be used to provide input to this Function.
         properties:
           apiVersion:
             description: |-
@@ -28,9 +28,8 @@ spec:
               may reject unrecognized values.
               More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
-          example:
-            description: Example is an example field. Replace it with whatever input
-              you need. :)
+          inline:
+            description: Inline is a code which should be triggered
             type: string
           kind:
             description: |-
@@ -42,6 +41,9 @@ spec:
             type: string
           metadata:
             type: object
+          path:
+            description: Path is the file path to the script, JUST FOR TESTING
+            type: string
         type: object
     served: true
     storage: true
