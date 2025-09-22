@@ -14,7 +14,7 @@ import (
 // TODO: Add your input type here! It doesn't need to be called 'Input', you can
 // rename it to anything you like.
 
-// Script can be used to provide input to this Function.
+// Inline can be used to provide input to this Function.
 // +kubebuilder:object:root=true
 // +kubebuilder:storageversion
 // +kubebuilder:resource:categories=crossplane
@@ -22,6 +22,8 @@ type Script struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// Example is an example field. Replace it with whatever input you need. :)
-	Example string `json:"example,omitempty"`
+	// Inline is a code which should be triggered
+	Inline string `json:"inline,omitempty"`
+	// Path is the file path to the script, JUST FOR TESTING
+	Path string `json:"path,omitempty"`
 }
